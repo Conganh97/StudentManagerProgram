@@ -27,8 +27,16 @@ public class StudentManager {
         System.out.println("6.| Read on file");
         System.out.println("7.| Writen on file");
         System.out.println("8.| Exit!!!");
-        System.out.println("Choose option: ");
-        int choice = Integer.parseInt(sc.nextLine());
+        int choice = -1;
+        try {
+            System.out.println("Choose option: ");
+            choice = Integer.parseInt(sc.nextLine());
+            if (choice < 0 || choice > 8) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            System.err.println("No option!! choose again!!");
+        }
         switch (choice) {
             case 1:
                 displayStudentList();
@@ -53,9 +61,6 @@ public class StudentManager {
                 break;
             case 8:
                 System.exit(0);
-                break;
-            default:
-                System.out.println("No option!!");
                 break;
         }
     }
@@ -94,19 +99,19 @@ public class StudentManager {
 
     public int searchStudent() {
         while (true) {
+            String ID;
             try {
-                System.out.println("Enter student's id  you want search: ");
-                String ID = sc.nextLine();
-                if (ID.equals("") ){
+                System.out.println("Enter student's id you want search: ");
+                ID = sc.nextLine();
+                if ("".equals(ID)) {
                     menu();
-                } else {
-                    int id = Integer.parseInt(ID);
+                }
+                int id = Integer.parseInt(ID);
                 for (int i = 0; i < students.size(); i++) {
-                    if (students.get(i).getId() == id) return i;
-                }
-                return -1;
-                }
-            } catch (Exception e) {
+                        if (students.get(i).getId() == id) return i;
+                    }
+                throw new Exception();
+        } catch (Exception e) {
                 System.out.println("Enter wrong!! Enter id again!!");
             }
         }
@@ -132,6 +137,7 @@ public class StudentManager {
                 double averageScore = Double.parseDouble(sc.nextLine());
                 students.get(index).setAverageScore(averageScore);
                 System.out.println("Edit success");
+                break;
             } catch (Exception e) {
                 System.out.println("Enter wrong!! Enter again");
             }
@@ -177,7 +183,10 @@ public class StudentManager {
         String str = sc.nextLine();
         if (str.equals("y")){
             readerAndWriter.read();
-        } else menu();
+        } else {
+            System.out.println("Read fail!!");
+            menu();
+        }
     }
 
     public void writeList (){
@@ -185,6 +194,9 @@ public class StudentManager {
         String str = sc.nextLine();
         if (str.equals("y")){
             readerAndWriter.write(students);
-        } else menu();
+        } else {
+            System.out.println("Save fail!!");
+            menu();
+        }
     }
 }
